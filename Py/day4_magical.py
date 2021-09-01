@@ -30,23 +30,24 @@ fm.fontManager.ttflist.append(fe) # append new font
 # set new font for titles and labels
 csfont = {'fontname':'magicSchool'}
 ### Start plotting
-plt.figure(figsize=(10,5))
-plt.title('Characters with most script lines in Harry Potter and the Prisoner of Azkaban', fontsize=25, **csfont)
-plt.xlabel('Characters', fontsize=15, **csfont)
-plt.ylabel('Script Lines', fontsize=15, **csfont)
+fig, ax = plt.subplots()
+fig.set_size_inches(10,5)
+ax.set_title('Characters with most script lines in Harry Potter and the Prisoner of Azkaban', fontsize=25, **csfont)
+ax.set_xlabel('Characters', fontsize=15, **csfont)
+ax.set_ylabel('Script Lines', fontsize=15, **csfont)
 plt.xticks(fontsize=14, **csfont)
 # Custom y limit to fit custom markers
-plt.ylim(0, 400)
+ax.set_ylim(0, 400)
 # remove top and right frame sides
-plt.gca().spines['right'].set_visible(False)
-plt.gca().spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.spines['top'].set_visible(False)
 # set gryffindor palette colours for all except Snape who has slytherin colour
 mycolors = ['#740001', '#ae0001', '#eeba30', '#d3a625', '#000000', '#740001', '#ae0001','#5d5d5d']
 # top 8 characters with most script lines
 x = summary.loc[:7,'Character']
 y = summary.loc[:7,'script_lines']
 # plot bars
-plt.bar(x, y, color=mycolors)
+ax.bar(x, y, color=mycolors)
 ## add custom markers
 import matplotlib.transforms as mpl
 from svgpathtools import svg2paths
@@ -67,7 +68,7 @@ for filename in os.listdir(directory):
         hp_marker = hp_marker.transformed(mpl.Affine2D().scale(-1,1))
         hpmarkers[fn] = hp_marker
         idx = summary.index[summary['Character'] == fn.upper()]
-        plt.plot(fn.upper(),summary.iloc[idx]['script_lines']+30,'o',marker=hpmarkers[fn],markersize=50, color='black')
+        ax.plot(fn.upper(),summary.iloc[idx]['script_lines']+30,'o',marker=hpmarkers[fn],markersize=50, color='black')
 # save figure
 plt.savefig('../output/day4_magical.jpg')
 plt.show()
