@@ -46,22 +46,23 @@ p2014b = p2014.assign(wineBottles = p2014['litres'].transform(lambda x: int(x)))
 print(p2014b.head())
 
 # Start plotting
-plt.figure(figsize=(10,5))
-plt.title('2014 Wine Consumption per Person', fontsize=20)
-plt.xlabel('Litres (1bottle = 1Litre of wine)')
+fig, ax = plt.subplots()
+fig.set_size_inches(10,5)
+ax.set_title('2014 Wine Consumption per Person', fontsize=20)
+ax.set_xlabel('Litres (1bottle = 1Litre of wine)')
 
 ### Plot with custom markers
 for i in p2014b.index:
     nb = p2014b.loc[i,'wineBottles'] # 1 bottle of wine = 1 litre of wine
-    plt.plot([i for i in range(1,nb+1)],[p2014b.loc[i,'country']]*nb,'o',marker=wine_marker,markersize=30, color='#9c1727')
+    ax.plot([i for i in range(1,nb+1)],[p2014b.loc[i,'country']]*nb,'o',marker=wine_marker,markersize=30, color='#9c1727')
 
 # Plot barh
 x = p2014b['litres']
 y = p2014b['country']
-plt.barh(y,x, color='#E6E8E6')
+ax.barh(y,x, color='#E6E8E6')
 # remove top and right frame sides
-plt.gca().spines['right'].set_visible(False)
-plt.gca().spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.spines['top'].set_visible(False)
 # save fig
 plt.savefig('../output/day2_pictogram.jpg')
 plt.show()
