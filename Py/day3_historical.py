@@ -31,18 +31,25 @@ dfpartial = df[(df.country == 'Chile') | (df.country == 'China') | (df.country =
 print(dfpartial.describe())
 
 # plot
-plt.figure(figsize=(10,5)) # crear figura, especificando tamaño
-plt.axes(frameon=False) # quitar el marco de la figura
+fig, ax = plt.subplots()
+fig.set_size_inches(10,5) # crear figura, especificando tamaño
+# quitar el marco de la figura
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.spines['bottom'].set_visible(False)
+ax.spines['left'].set_visible(False)
 # Plot some data
 # and keep plotting more data on the axes as many countries are selected...
 for c in dfpartial.country.unique():
-    plt.plot(dfpartial.year.unique(), dfpartial['share_renewables'].loc[dfpartial.country == c], label=c, marker='o')
-plt.xlabel('Year', fontsize=10) # add x-label
-plt.ylabel('Share of renewables (%)', fontsize=10) # add y-label
-plt.title('How much of our primary energy comes from renewables?', fontsize=20) # add title
-plt.minorticks_on() # turn on minor ticks on both axes
-plt.xticks(rotation=90) # rotate xlabels
-plt.grid(which='both', linestyle='--') # add minor and major grid lines
-plt.legend()  # Add a legend.
+    ax.plot(dfpartial.year.unique(), dfpartial['share_renewables'].loc[dfpartial.country == c], label=c, marker='o')
+ax.set_xlabel('Year', fontsize=10) # add x-label
+ax.set_ylabel('Share of renewables (%)', fontsize=10) # add y-label
+ax.set_title('How much of our primary energy comes from renewables?', fontsize=20) # add title
+ax.minorticks_on() # turn on minor ticks on both axes
+# rotate xlabels
+for tick in ax.get_xticklabels():
+    tick.set_rotation(90)
+ax.grid(which='both', linestyle='--') # add minor and major grid lines
+ax.legend()  # Add a legend.
 plt.savefig('../output/day3_historical.jpg') # save figure
 plt.show()
